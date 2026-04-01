@@ -50,38 +50,26 @@ Add a smaller-screen device if the task changes dense layouts, tab bars, badges,
 
 ### Execution preference
 
-- Default to native validation routes that are already available to the team:
-  - Android emulator or locally connected device
-  - iOS simulator or locally connected device
-- For the current mobile ASGARD flow, keep emulator or simulator based validation as the baseline assumption.
-- Treat BrowserStack as out of scope for the baseline role unless the owner explicitly asks for cloud-device coverage in this workflow.
+- Tests run on local emulators and simulators. This is the confirmed baseline for the current mobile workflow:
+  - Android: emulator (e.g. Pixel 6 API 34)
+  - iOS: simulator (e.g. iPhone 14, iOS 17)
+- BrowserStack is **out of scope** for this workflow.
 - If the task only asks for scenario design, do not force any execution environment at all. Separate scenario design from run orchestration.
-- CI-side execution still belongs to the merge or devops flow, not to the tester role itself.
-
-### BrowserStack
-
-- Accessible Confluence sources confirm BrowserStack was selected in a PoC for Larixon mobile testing.
-- The same source mentions `2` parallel sessions.
-- Credentials were not available in accessible sources.
-- Server's `2026-04-01` guidance says not to describe BrowserStack in the current baseline mobile tester skills for now.
-- Only bring BrowserStack back if the owner explicitly asks for cloud-device execution in this workflow.
+- CI-side execution (Bamboo) runs tests on emulators automatically after merge. The tester role writes and validates locally; CI execution belongs to the automated merge/devops flow.
 
 ### Test management and reporting
 
-- Allure/TestOps base URL: `https://larixon.testops.cloud`
-- Confirmed TestOps launch pages for this workflow:
-  - `https://larixon.testops.cloud/project/168/launches`
-  - `https://larixon.testops.cloud/project/69/launches`
-- Confirmed Bamboo plan pages currently referenced for this workflow:
-  - `https://bamboo.dev.larixon.com/browse/AD-AT`
-  - `https://bamboo.dev.larixon.com/browse/AD-IN`
-  - `https://bamboo.dev.larixon.com/browse/ID-II`
-- Android UI tests already expose Allure metadata such as:
-  - `AllureId`
-  - `Epic`
-  - `Feature`
-  - `Story`
-- Do not route this workflow through TestRail. Use the confirmed TestOps projects above as the primary reporting entry points.
+- **Allure TestOps** is the primary reporting system (not TestRail):
+  - Base URL: `https://larixon.testops.cloud`
+  - Android launches: `https://larixon.testops.cloud/project/69/launches`
+  - iOS launches: `https://larixon.testops.cloud/project/168/launches`
+- Bamboo plan keys for CI test execution:
+  - Android Automated Tests: `AD-AT` — `https://bamboo.dev.larixon.com/browse/AD-AT`
+  - Android Integration: `AD-IN` — `https://bamboo.dev.larixon.com/browse/AD-IN`
+  - iOS Integration: `ID-II` — `https://bamboo.dev.larixon.com/browse/ID-II`
+- Android UI tests expose Allure metadata through annotations:
+  - `AllureId`, `Epic`, `Feature`, `Story`
+- Do not route this workflow through TestRail.
 
 ### Execution commands
 

@@ -13,14 +13,13 @@ The files are organized to mirror the actions requested in the Jira task:
 
 ## Status
 
-- ASGARD roles inspected on `2026-04-01`: `unit-tester`, `integ-tester`
-- Available account permission: `viewer`
-- Direct write attempt to ASGARD roles API failed with `403` and `required: write:roles`
-- Final Role Composer preview for the project-composed roles cannot be generated until these drafts are uploaded as project additions/replacements in HEIMDALL
-- Slack review on `2026-04-01` clarified that tester roles should not directly trigger Bamboo. They should design coverage, write tests, validate locally when possible, and hand off CI execution to the existing merge or devops flow.
-- Server guidance from the same day clarified two more boundaries for the current mobile flow:
-  - `Playwright` belongs to a separate web flow, not to the default mobile app tester skills
-  - `BrowserStack` should not be described as a baseline runner for the current mobile tester skills
+- ASGARD roles inspected on `2026-04-01`: `unit-tester` (Manifest v2, 15 slots), `integ-tester` (Manifest v3, 15 slots)
+- Account permission: `viewer` — files need to be uploaded by a user with `write:roles`
+- Bamboo plan keys confirmed: `AD-AT`, `AD-IN`, `ID-II`
+- Allure TestOps confirmed as reporting system (not TestRail): projects 69 and 168
+- Tests run on emulators/simulators — BrowserStack is out of scope
+- Playwright is out of scope (separate web flow, not part of mobile tester skills)
+- Tester roles write and validate locally; CI execution belongs to the merge/devops flow
 
 ## Scope covered in this package
 
@@ -41,9 +40,8 @@ The files are organized to mirror the actions requested in the Jira task:
 | Slot | Action | Reason |
 | --- | --- | --- |
 | `037-multi-market-tests.md` | replace | Platform copy is not aligned with Larixon mobile markets |
-| `200-larixon-test-devices.md` | add | Need environments, devices, TestOps notes, and native-first validation guidance for the current mobile flow |
-| `036-accessibility-tests.md` | extend | Need Larixon-specific a11y constraints and mobile automation hints |
-| `210-playwright-web-tests.md` | add | Optional separate-flow placeholder for confirmed web or hybrid work; intentionally excluded from the mobile baseline |
+| `200-larixon-test-devices.md` | add | Environments, devices, TestOps, emulator/simulator baseline |
+| `036-accessibility-tests.md` | extend | Larixon-specific a11y constraints and mobile automation hints |
 
 ## Confirmed inputs used for the drafts
 
@@ -93,54 +91,22 @@ The files are organized to mirror the actions requested in the Jira task:
 
 ### Shared QA infrastructure
 
-- Allure/TestOps base URL: `https://larixon.testops.cloud`
-- Confirmed TestOps launch pages for this workflow:
-  - `https://larixon.testops.cloud/project/168/launches`
-  - `https://larixon.testops.cloud/project/69/launches`
-- Confirmed Bamboo plan pages currently referenced for this workflow:
-  - `https://bamboo.dev.larixon.com/browse/AD-AT`
-  - `https://bamboo.dev.larixon.com/browse/AD-IN`
-  - `https://bamboo.dev.larixon.com/browse/ID-II`
-- Confluence sources confirm:
-  - Android builds are in Bamboo
-  - iOS builds are often assembled manually or via Fastlane in current accessible process docs
-  - BrowserStack was selected in a PoC, but credentials are not available in current sources
-- Owner clarification:
-  - TestRail is not needed for this workflow
-  - use the confirmed TestOps projects above as the primary reporting path
-- Slack clarification from `2026-04-01`:
-  - tester roles are not expected to start Bamboo jobs directly
-  - CI and build execution should stay in the existing automated or devops-controlled flow
-  - BrowserStack vs emulator or simulator still needs explicit owner confirmation for this workflow
-  - Server clarified that `Playwright` is for web and should stay outside the current mobile app flow
-  - Server also said not to describe those web-specific checks inside the current mobile tester skills for now
+- **Allure TestOps** (primary reporting, not TestRail):
+  - Base URL: `https://larixon.testops.cloud`
+  - Android project: `https://larixon.testops.cloud/project/69/launches`
+  - iOS project: `https://larixon.testops.cloud/project/168/launches`
+- **Bamboo** plan keys:
+  - `AD-AT` — Android Automated Tests: `https://bamboo.dev.larixon.com/browse/AD-AT`
+  - `AD-IN` — Android Integration: `https://bamboo.dev.larixon.com/browse/AD-IN`
+  - `ID-II` — iOS Integration: `https://bamboo.dev.larixon.com/browse/ID-II`
+- **Execution**: emulators (Android) and simulators (iOS) — BrowserStack out of scope
+- **Playwright**: out of scope (separate web flow)
+- Tester roles write and validate locally; CI execution belongs to the merge/devops flow
 
-## Known gaps that still need owner confirmation
+## Remaining steps
 
-- BrowserStack should be treated as out of scope for the current baseline mobile tester skills unless the owner explicitly reintroduces cloud-device coverage
-- BrowserStack credentials were not found
-- A confirmed Playwright web repo/base URLs were not found, and Playwright should stay outside the mobile baseline because Server described it as a separate web flow
-- Exact Bamboo plan keys can be added later as handoff metadata, but they are not required for the base tester-role behavior clarified in Slack
-- Final ASGARD composed preview cannot be checked until someone uploads these overrides with `write:roles`
-
-## Validation
-
-Run the local validator to check:
-
-- required AW-3 files exist
-- each markdown file stays within the requested size budget
-- README local source paths still resolve
-- obvious contradictions do not appear around Bamboo, BrowserStack, Playwright, or removed pilot residue
-- basic completeness hints from the Jira task are still present
-
-Command:
-
-- `./scripts/validate_aw3.py`
-
-Current expected result:
-
-- `FAIL: 0`
-- `WARN: 0`
+- Upload these files to ASGARD Role Composer as project additions/replacements (requires `write:roles`)
+- Verify assembled prompts via "Preview Assembled" in HEIMDALL after upload
 
 ## Sources
 
