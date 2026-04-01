@@ -28,7 +28,7 @@ REQUIRED_FILES = [
 COMPLETENESS_HINTS = {
     "unit-tester/add/200-larixon-test-infra.md": {
         "required": ["bamboo", "testdebugunittest", "testtjdebugunittest", "test fixture", "ios"],
-        "warn": ["la-baz", "build/reports/kover/html/index.html"],
+        "warn": ["la-baz", "build/reports/kover/html/index.html", "browse/ad-at", "browse/ad-in", "browse/id-ii"],
     },
     "unit-tester/replace/011-test-style.md": {
         "required": ["junit 5", "mockk", "kotest", "action_condition_expectedresult", "assertions"],
@@ -50,8 +50,11 @@ COMPLETENESS_HINTS = {
             "browserstack",
             "project/168/launches",
             "project/69/launches",
+            "browse/ad-at",
+            "browse/ad-in",
+            "browse/id-ii",
         ],
-        "warn": ["plan key"],
+        "warn": [],
     },
     "integ-tester/extend/036-accessibility-tests.md": {
         "required": ["left-to-right", "48dp"],

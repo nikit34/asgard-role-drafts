@@ -72,6 +72,10 @@ Add a smaller-screen device if the task changes dense layouts, tab bars, badges,
 - Confirmed TestOps launch pages for this workflow:
   - `https://larixon.testops.cloud/project/168/launches`
   - `https://larixon.testops.cloud/project/69/launches`
+- Confirmed Bamboo plan pages currently referenced for this workflow:
+  - `https://bamboo.dev.larixon.com/browse/AD-AT`
+  - `https://bamboo.dev.larixon.com/browse/AD-IN`
+  - `https://bamboo.dev.larixon.com/browse/ID-II`
 - Android UI tests already expose Allure metadata such as:
   - `AllureId`
   - `Epic`

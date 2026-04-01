@@ -7,6 +7,10 @@ This role covers Larixon mobile work across Android/KMP and iOS. Always name the
 ### CI and ownership
 
 - Android mobile builds are published through Bamboo. The accessible process docs confirm Bamboo usage and a known mobile build entry point `LA-BAZ`.
+- Confirmed Bamboo plan pages currently referenced for this workflow:
+  - `https://bamboo.dev.larixon.com/browse/AD-AT`
+  - `https://bamboo.dev.larixon.com/browse/AD-IN`
+  - `https://bamboo.dev.larixon.com/browse/ID-II`
 - Tester-role ownership stops before direct CI orchestration. Do not tell the user that the unit-tester role should manually trigger Bamboo unless the task explicitly asks for CI handoff details.
 - If CI metadata is requested, report only confirmed facts such as plan names or artifact labels visible in the task, repo, or attached docs. Do not invent hidden plan keys.
 - iOS CI in the accessible sources is not symmetrical with Android. Current process docs say iOS builds are often assembled manually, while the repo itself contains Fastlane configuration. State the actual evidence you found.

@@ -97,6 +97,10 @@ The files are organized to mirror the actions requested in the Jira task:
 - Confirmed TestOps launch pages for this workflow:
   - `https://larixon.testops.cloud/project/168/launches`
   - `https://larixon.testops.cloud/project/69/launches`
+- Confirmed Bamboo plan pages currently referenced for this workflow:
+  - `https://bamboo.dev.larixon.com/browse/AD-AT`
+  - `https://bamboo.dev.larixon.com/browse/AD-IN`
+  - `https://bamboo.dev.larixon.com/browse/ID-II`
 - Confluence sources confirm:
   - Android builds are in Bamboo
   - iOS builds are often assembled manually or via Fastlane in current accessible process docs
@@ -136,8 +140,7 @@ Command:
 Current expected result:
 
 - `FAIL: 0`
-- `WARN: 1`
-- The remaining warning is the still-unconfirmed exact UI `plan key` in `integ-tester/add/200-larixon-test-devices.md`
+- `WARN: 0`
 
 ## Sources
 
