@@ -27,6 +27,7 @@ The files are organized to mirror the actions requested in the Jira task:
 
 | Slot | Action | Reason |
 | --- | --- | --- |
+| `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, coverage targets, risk map, test data |
 | `200-larixon-test-infra.md` | add | Larixon-specific ownership boundaries, local run references, fixture layout, Android+iOS notes |
 | `011-test-style.md` | replace | Actual Larixon test style is mixed Android/KMP plus iOS XCTest/Quick, not one pure platform pattern |
 | `020-coverage.md` | replace | Current Android repo uses Kover; legacy Jacoco wording exists in old docs |
@@ -39,6 +40,7 @@ The files are organized to mirror the actions requested in the Jira task:
 
 | Slot | Action | Reason |
 | --- | --- | --- |
+| `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, screen/flow assignments, MockWebServer setup |
 | `037-multi-market-tests.md` | replace | Platform copy is not aligned with Larixon mobile markets |
 | `200-larixon-test-devices.md` | add | Environments, devices, TestOps, emulator/simulator baseline |
 | `036-accessibility-tests.md` | extend | Larixon-specific a11y constraints and mobile automation hints |
