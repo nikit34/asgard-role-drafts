@@ -45,6 +45,7 @@ The files are organized to mirror the actions requested in the Jira task:
 | `032-usecase-tests.md` | replace | Need real Larixon domain examples, including review flow |
 | `033-viewmodel-tests.md` | replace | Need Kotest/Turbine/dispatcher patterns from real code plus iOS equivalent |
 | `034-mapper-tests.md` | replace | Need real DTO-to-domain examples, including paginated reviews |
+| `035-kmp-testing.md` | extend | KMP testing: commonTest vs platform, running, expect/actual mocking |
 
 ### Integration Tester
 
