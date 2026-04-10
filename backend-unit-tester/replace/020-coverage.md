@@ -26,7 +26,7 @@ These are working engineering targets, not a license to write shallow tests. Beh
 - Fail-below-threshold: `python -m pytest --cov={app} --cov-fail-under=80`
 - Check specific module: `python -m pytest --cov={app}.{module} adverts/tests/test_{module}.py`
 - The `htmlcov/index.html` report shows line-by-line coverage
-- If CI publishes a coverage artifact, report the actual URL. Do not fabricate one.
+- CI coverage configuration is out of scope. If the task explicitly asks about CI, report only confirmed facts — do not fabricate URLs.
 
 ### Review rule
 
@@ -42,6 +42,6 @@ When you evaluate coverage for a change:
 Always say:
 
 - tool actually used (`pytest-cov`, or other)
-- whether the CI report URL is confirmed
+- whether a local coverage report was generated
 - which layer is under-covered
 - which exact behaviors are still untested

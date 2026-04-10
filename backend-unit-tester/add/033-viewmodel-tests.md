@@ -2,6 +2,8 @@
 
 Use this slot for Django views, DRF viewsets, API endpoints, and any module that handles HTTP request/response.
 
+These are **unit-level** view tests: each test exercises a single endpoint with minimal, controlled DB state and no external service calls. Tests that involve multiple endpoints, cross-app orchestration, or real external dependencies belong in `backend-integ-tester`.
+
 ### What view tests must prove
 
 - correct HTTP status code for success and error cases
@@ -20,7 +22,7 @@ Use this slot for Django views, DRF viewsets, API endpoints, and any module that
 
 ### What this layer covers vs integration
 
-View tests at the unit level focus on response correctness with controlled DB state. Full integration tests (real multi-service flows, external dependencies) belong in `backend-integ-tester`.
+View tests at the unit level focus on response correctness for a single endpoint with controlled DB state. Reserve `backend-integ-tester` for scenarios that span multiple endpoints, involve external service stubs, or exercise cross-app side effects.
 
 ### Writing rules
 

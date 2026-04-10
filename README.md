@@ -7,10 +7,11 @@ This directory contains project-specific role additions and overrides prepared f
 - `unit-tester`
 - `integ-tester`
 
-### Backend/Web roles (Django/Python + Playwright)
+### Backend/Web roles (Django/Python + React/Next.js + Playwright)
 
 - `backend-test-architect`
 - `backend-unit-tester`
+- `frontend-unit-tester`
 - `backend-integ-tester`
 - `backend-e2e-tester`
 
@@ -68,13 +69,21 @@ The files are organized to mirror the actions requested in the Jira task:
 | Slot | Action | Reason |
 | --- | --- | --- |
 | `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, coverage targets, risk map |
-| `033-viewmodel-tests.md` | add | Django view/DRF viewset/API endpoint tests (no platform slot, added between 032 and 040) |
+| `033-viewmodel-tests.md` | add | Django view/DRF viewset/API endpoint tests — unit-level, single endpoint, controlled DB (no platform slot, added between 032 and 040) |
 | `200-larixon-web-infra.md` | add | Larixon web/backend infra, repo, CI, TestOps, local execution, test stack, conftest example |
 | `011-test-style.md` | replace | Python/pytest/Django test style instead of generic platform pattern |
 | `020-coverage.md` | replace | pytest-cov coverage expectations with Django layer-specific floors, --cov-fail-under |
 | `031-service-tests.md` | replace | Service/business logic/management command tests (was 032-usecase-tests) |
 | `032-serializer-tests.md` | replace | DRF serializer/mapper/formatter tests (was 034-mapper-tests) |
 | `033-model-tests.md` | replace | Django model/manager/queryset tests (was 031-repository-tests) |
+
+### Frontend Unit Tester
+
+| Slot | Action | Reason |
+| --- | --- | --- |
+| `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, coverage targets, risk map |
+| `200-larixon-web-frontend-infra.md` | add | Larixon frontend infra, repo, test stack, local execution, reporting |
+| `011-test-style.md` | replace | React/Next.js test style with Jest/Vitest + React Testing Library |
 
 ### Backend Integration Tester
 

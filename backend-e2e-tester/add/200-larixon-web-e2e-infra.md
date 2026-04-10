@@ -40,4 +40,5 @@ Every E2E result must include:
 - market(s) tested
 - test run link or artifact path
 - flaky risks identified
-- whether CI metadata is confirmed or still requires escalation
+
+CI pipeline execution and configuration are out of scope for this role. Do not report on CI status or suggest CI changes unless the task explicitly asks for it.

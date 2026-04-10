@@ -2,7 +2,7 @@
 
 ### Scope
 
-This role covers integration testing for the Larixon backend/web Django monolith. Integration tests exercise full request/response cycles through the Django test client with real database.
+This role covers integration testing for the Larixon backend/web Django monolith. Integration tests exercise **cross-app or multi-service flows** through the Django test client with real database — scenarios that span multiple endpoints, involve external service stubs, or exercise cross-module side effects. Single-endpoint tests with controlled DB belong in `backend-unit-tester`.
 
 - Repository: `https://gitlab.dev.larixon.com/larixon-classifieds/web/core`
 - Local path convention: `~/Core`
@@ -39,29 +39,35 @@ Always name the exact stand when specifying test prerequisites:
 
 ### Integration test patterns
 
+Integration tests prove that **multiple parts of the system work together correctly**. Reserve this layer for scenarios that cannot be covered by a single-endpoint unit test:
+
+- Multi-step flows: create entity via one endpoint, verify side effects via another
+- External service integration: stub third-party APIs and verify the full call chain
+- Cross-app interactions: actions in one Django app triggering behavior in another
+- Market-specific end-to-end API flows that combine several services
+
+Patterns:
+
 - Use `APITestCase` with `self.client` for endpoint tests
-- Create minimal DB fixtures with factories
+- Create DB fixtures with factories reflecting realistic cross-module state
 - Assert full response cycle: status code, body structure, key field values
 - For XML endpoints: parse response content with `ET.fromstring()` and use `find()` / `findall()`
 - For paginated endpoints: assert `count`, `next`, `results` structure
-- Test with authenticated and unauthenticated users
-- Test filter, ordering, and limit parameters
 
-Example (XML feed endpoint):
+Example (cross-app integration — advert creation triggers feed update):
 
 ```python
-class TestFacebookFeedXML(APITestCase):
-    def test_feed_returns_valid_xml_with_listings(self):
-        baker.make("adverts.Advert", is_active=True, _quantity=3)
-        response = self.client.get("/api/v2/feeds/property/facebook/")
-        self.assertEqual(response.status_code, 200)
-        root = ET.fromstring(response.content)
+class TestAdvertFeedIntegration(APITestCase):
+    def test_new_advert_appears_in_facebook_feed(self):
+        # Step 1: create advert via API
+        self.client.force_authenticate(user=self.seller)
+        create_resp = self.client.post("/api/v2/adverts/", advert_data)
+        self.assertEqual(create_resp.status_code, 201)
+        # Step 2: verify it appears in the feed
+        feed_resp = self.client.get("/api/v2/feeds/property/facebook/")
+        root = ET.fromstring(feed_resp.content)
         listings = root.findall(".//listing")
-        self.assertEqual(len(listings), 3)
-
-    def test_feed_returns_404_for_unknown_type(self):
-        response = self.client.get("/api/v2/feeds/unknown/facebook/")
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(len(listings), 1)
 ```
 
 ### Real project examples
@@ -73,6 +79,8 @@ class TestFacebookFeedXML(APITestCase):
 Every integration result must include:
 
 - endpoint(s) and HTTP method(s) tested
-- stand URL (if tested against running instance)
+- stand URL (if tested against a running instance)
 - test run artifact path
 - factories/fixtures created
+
+CI pipeline execution and configuration are out of scope for this role. Do not report on CI status or suggest CI changes unless the task explicitly asks for it.

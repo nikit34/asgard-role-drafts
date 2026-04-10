@@ -14,11 +14,12 @@ When producing a test strategy and test matrix, assign each scenario to exactly 
 
 | Layer | What it covers | Downstream role |
 | --- | --- | --- |
-| Unit BE | Single class/function in isolation: models, managers, querysets, services, serializers, utils | `backend-unit-tester` |
-| Integration | API endpoint through Django test client with real DB, full request/response cycle | `backend-integ-tester` |
-| E2E UI | Browser-level user flow via Playwright against a running stand | `e2e-tester` |
+| Unit BE | Single class/function or single endpoint in isolation with controlled DB state: models, managers, querysets, services, serializers, views, viewsets, utils | `backend-unit-tester` |
+| Unit FE | Frontend component, hook, store, formatter, or mapper in isolation: rendering, state transitions, data transformation | `frontend-unit-tester` |
+| Integration | Cross-app or multi-service flow through the Django test client: scenarios involving multiple endpoints, external service stubs, or cross-module side effects | `backend-integ-tester` |
+| E2E UI | Browser-level user flow via Playwright against a running stand | `backend-e2e-tester` |
 
-Do not duplicate the same assertion across layers. If an integration test already proves a serializer field, do not add a unit test that only re-checks the same field.
+Do not duplicate the same assertion across layers. If an integration test already proves a serializer field, do not add a unit test that only re-checks the same field. A single-endpoint view test with controlled DB belongs in Unit BE; reserve Integration for flows that span multiple services or apps.
 
 ### TD format requirements
 
@@ -33,7 +34,7 @@ Produce test design as a Confluence page following the team rules:
    - Unique ID (e.g. 1.1, 2.3)
    - Реализован: (filled by downstream tester after implementation — leave empty in TD)
    - Задача / Предусловия / Действие / Ожидаемый результат
-   - Priority, Layer, Type (manual / auto-candidate)
+   - Priority, Layer, Type: `auto` (manual test cases are out of scope for this chain)
 
 Test cases must be in a markdown table or structured list with a `Name` column — this is required for downstream parsing by `tester-skills-mcp`.
 
@@ -71,7 +72,6 @@ Apply techniques based on feature logic:
 | Pairwise testing | Multiple parameters and combinations |
 | Decision tables | Multiple conditions and business rules |
 | Scenario testing | User stories and multi-step flows |
-| Exploratory testing | Weak documentation or UX-oriented features |
 
 ### Code analysis rules
 
@@ -113,8 +113,8 @@ Larixon serves multiple markets. When the feature affects user-facing content, m
 
 The test-architect produces these artifacts for downstream testers:
 
-- `test-strategy.md` — scope, boundaries, test levels, role assignments
-- `test-matrix.md` — scenario IDs (T-001..T-NNN), priorities, layer assignments
+- `test-strategy.md` — scope, boundaries, test levels, role assignments (must include `frontend-unit-tester` when frontend code is changed)
+- `test-matrix.md` — scenario IDs (T-001..T-NNN), priorities, layer assignments (Unit BE / Unit FE / Integration / E2E)
 - `risk-map.md` — HIGH/MEDIUM/LOW per area
 - `test-data-strategy.md` — fixture shapes, API response examples, error codes
 - `coverage-targets.md` — per-module or per-class coverage targets with justification

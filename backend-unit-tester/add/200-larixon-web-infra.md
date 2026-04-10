@@ -28,7 +28,7 @@ This role covers Larixon backend/web work. The primary codebase is a Django/DRF 
 
 - Coverage is measured with `pytest-cov` (coverage.py under the hood).
 - Expected local HTML report: `htmlcov/index.html`
-- If CI publishes a differently named artifact, report both the user-facing CI name and the actual tool behind it.
+- CI coverage configuration is out of scope. If the task explicitly asks about CI artifacts, report only confirmed facts.
 
 ### Test fixture layout
 
@@ -68,4 +68,5 @@ Always return:
 - repo path
 - exact local command(s) when local validation is relevant
 - exact test file paths used as examples
-- whether CI metadata or coverage URL is confirmed or still requires escalation
+
+CI pipeline execution and configuration are out of scope for this role. Do not report on CI status, CI coverage URLs, or suggest CI changes unless the task explicitly asks for it.
