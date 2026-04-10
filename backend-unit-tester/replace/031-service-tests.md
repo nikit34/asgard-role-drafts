@@ -13,10 +13,11 @@ Use this slot for services, use cases, business-rule functions, management comma
 
 ### Django-specific patterns
 
-- Use `TestCase` when the service reads/writes to DB
+- Mock all ORM calls. If the service method inherently requires real DB (e.g., complex queryset operations that cannot be meaningfully mocked), note it as a candidate for integration-level testing and flag in Jira comment.
 - Mock external services (Redis, Celery, third-party APIs) — do not call real external systems in unit tests
 - Use `@override_settings` for configuration-dependent behavior
-- For management commands: call `call_command()` and assert DB state and stdout/stderr output
+- For management commands: mock DB interactions and assert stdout/stderr output via `StringIO`
+- Use `baker.prepare` (no DB save) when you need a model instance as input — never `baker.make` in unit tests as it hits the DB
 
 Example service test:
 
@@ -59,4 +60,4 @@ call_command("sync_feeds", "--market=bazaraki")
 - testing only constructor or initialization
 - asserting only that a log message was emitted while skipping the actual result
 - duplicating model-layer tests without adding business-value checks
-- mocking everything including the DB when the service's value IS its DB interaction
+- using `@pytest.mark.django_db` or `TestCase` — this role is pure unit, no database

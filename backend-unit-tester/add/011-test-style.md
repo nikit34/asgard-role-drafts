@@ -6,11 +6,9 @@ Follow the dominant style of the touched app/module. Larixon web/core is a Djang
 
 ### Python / pytest
 
-- Prefer the style already used in the module:
-  - `pytest`-style functions with fixtures in newer code
-  - `django.test.TestCase` subclasses in legacy areas
-  - DRF `APITestCase` for endpoint-touching tests
-- Do not convert an entire existing `TestCase`-based file to pytest functions just to add one test.
+- This role uses plain `pytest` classes (no `TestCase` subclass) per locked `030-test-patterns.md`
+- `django.test.TestCase` and DRF `APITestCase` are for integration tests (`backend-integ-tester`), not this role
+- Do not convert an entire existing file's structure just to add one test — but new test classes you write must be plain pytest classes with `mocker` fixture
 
 ### Naming conventions
 
@@ -21,11 +19,9 @@ Follow the dominant style of the touched app/module. Larixon web/core is a Djang
 
 ### Assertions
 
-- Use plain `assert` statements in pytest-style tests
-- Use `self.assert*` methods in `TestCase` subclasses
-- Use `self.assertEqual`, `self.assertIn`, `self.assertRaises` in Django TestCase
-- For DRF: `response.status_code`, `response.data`, `response.json()`
-- For XML: `ET.fromstring()` with `find()` / `findall()` assertions
+- Use plain `assert` statements — this role does not use `self.assert*` (that belongs in `TestCase`-based integration tests)
+- Use `pytest.raises` for exception assertions
+- For comparing complex structures, use plain `assert` with `==`
 
 ### Mandatory writing rules
 
@@ -38,7 +34,7 @@ Follow the dominant style of the touched app/module. Larixon web/core is a Djang
 ### Parametrized tests
 
 - Use `@pytest.mark.parametrize` for data-driven test variations
-- Use `parameterized` or `subTest` in `TestCase` classes if that's the existing pattern
+- Do not use `parameterized` or `subTest` — those are `TestCase` patterns; use `@pytest.mark.parametrize` exclusively
 - Keep parametrize data readable — one row per scenario, not opaque tuples
 
 ### Do not

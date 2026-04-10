@@ -37,3 +37,25 @@ E2E tests execute against shared stands. Always name the exact stand:
 - Run with headed browser: `python -m pytest functional_tests/ --headed`
 - Run specific test: `python -m pytest functional_tests/test_feeds.py::test_name`
 - Run against specific stand: `BASE_URL=https://stand5.dev.larixon.com python -m pytest functional_tests/`
+
+### Test isolation
+
+- Each E2E test starts from a clean state — no shared fixtures between tests
+- Use `@pytest.mark.django_db(transaction=True)` for proper DB isolation
+- Create test users and resources in test setup, not as shared class-level state
+
+### Multi-user setup
+
+When testing permission boundary flows, create separate authenticated contexts:
+
+```python
+user_a = baker.make("auth.User")
+user_b = baker.make("auth.User")
+# Each user gets their own browser context or API client
+```
+
+### File organization
+
+- E2E test files: `functional_tests/test_e2e_{flow_name}.py`
+- Page Objects (if Playwright): `functional_tests/pages/{page_name}.py`
+- Shared fixtures: `functional_tests/conftest.py`

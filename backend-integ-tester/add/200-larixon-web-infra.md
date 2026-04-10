@@ -2,7 +2,7 @@
 
 ### Scope
 
-This role covers integration testing for the Larixon backend/web Django monolith. Integration tests exercise **cross-app or multi-service flows** through the Django test client with real database — scenarios that span multiple endpoints, involve external service stubs, or exercise cross-module side effects. Single-endpoint tests with controlled DB belong in `backend-unit-tester`.
+This role covers single-endpoint Django stack tests (HTTP → View → Serializer → Service → ORM → real DB). Multi-step flows spanning multiple user sessions belong in e2e-tester.
 
 - Repository: `https://gitlab.dev.larixon.com/larixon-classifieds/web/core`
 - Local path convention: `~/Core`
@@ -39,35 +39,32 @@ Always name the exact stand when specifying test prerequisites:
 
 ### Integration test patterns
 
-Integration tests prove that **multiple parts of the system work together correctly**. Reserve this layer for scenarios that cannot be covered by a single-endpoint unit test:
+Integration tests prove that the **full Django stack works correctly for a single endpoint** — routing, view, serializer, service layer, ORM, and real database together.
 
-- Multi-step flows: create entity via one endpoint, verify side effects via another
-- External service integration: stub third-party APIs and verify the full call chain
-- Cross-app interactions: actions in one Django app triggering behavior in another
-- Market-specific end-to-end API flows that combine several services
+The platform default uses pytest with `APIClient` fixture. In this project, both pytest-style and Django `APITestCase` exist — follow the dominant style of the test module.
 
 Patterns:
 
-- Use `APITestCase` with `self.client` for endpoint tests
-- Create DB fixtures with factories reflecting realistic cross-module state
+- Use `APITestCase` with `self.client` or pytest with `api_client` fixture for endpoint tests
+- Use `reverse()` for all URL resolution — never hardcode URL strings
+- Create DB fixtures with factories reflecting realistic state
 - Assert full response cycle: status code, body structure, key field values
 - For XML endpoints: parse response content with `ET.fromstring()` and use `find()` / `findall()`
 - For paginated endpoints: assert `count`, `next`, `results` structure
 
-Example (cross-app integration — advert creation triggers feed update):
+Example (single-endpoint integration — verify feed returns expected structure):
 
 ```python
-class TestAdvertFeedIntegration(APITestCase):
-    def test_new_advert_appears_in_facebook_feed(self):
-        # Step 1: create advert via API
+from django.urls import reverse
+
+class TestFacebookFeed(APITestCase):
+    def test_facebook_feed_returns_listings(self):
         self.client.force_authenticate(user=self.seller)
-        create_resp = self.client.post("/api/v2/adverts/", advert_data)
-        self.assertEqual(create_resp.status_code, 201)
-        # Step 2: verify it appears in the feed
-        feed_resp = self.client.get("/api/v2/feeds/property/facebook/")
-        root = ET.fromstring(feed_resp.content)
+        response = self.client.get(reverse("facebook-feed-list"))
+        self.assertEqual(response.status_code, 200)
+        root = ET.fromstring(response.content)
         listings = root.findall(".//listing")
-        self.assertEqual(len(listings), 1)
+        self.assertTrue(len(listings) >= 0)
 ```
 
 ### Real project examples

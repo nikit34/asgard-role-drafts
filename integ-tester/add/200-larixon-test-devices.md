@@ -36,6 +36,8 @@ Add a smaller-screen device if the task changes dense layouts, tab bars, badges,
 
 ### Execution preference
 
+Per platform rules, the integ-tester writes and compiles tests — execution happens in CI. The commands below are reference material for debugging and reproduction, not required steps.
+
 - Tests run on local emulators and simulators. This is the confirmed baseline for the current mobile workflow:
   - Android: emulator (e.g. Pixel 6 API 34)
   - iOS: simulator (e.g. iPhone 14, iOS 17)

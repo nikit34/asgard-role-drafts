@@ -26,7 +26,7 @@ When test-architect artifacts exist, they override your own planning:
 | Aspect | Without test-architect | With test-architect |
 |--------|----------------------|---------------------|
 | Scenario list | You derive from UX spec | Use assigned scenario IDs from test-matrix.md (your rows have `Test Level = Integration`) |
-| Screen state coverage | All 5 states for every screen | Use risk-map.md — HIGH = 5/5 states, MEDIUM = 3/5 (Success, Error, Loading) |
+| Screen state coverage | All 5 states for every screen | Use risk-map.md to prioritize testing order — HIGH areas first. All screens still require 5/5 states per platform rules; risk level determines test depth and assertion granularity, not state count. |
 | MockWebServer setup | You create from API contracts | Use JSON response definitions from test-data-strategy.md — file names, error codes, pagination shapes |
 | What NOT to test | Implicit | Use explicit "out of scope for Integration Tester" boundaries from test-strategy.md |
 

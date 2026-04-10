@@ -6,11 +6,12 @@ Larixon is mixed. Follow the dominant style of the touched module instead of for
 
 ### Android and KMP
 
+- Note: The platform default mandates Kotest only. In this project, legacy modules already use JUnit 5 — extend existing JUnit tests in the same style, but always prefer Kotest DescribeSpec for new test files.
 - Prefer the style already used in the module:
   - Kotest `DescribeSpec` is common in feature modules
   - JUnit-style test classes still exist in legacy app modules
 - Common tools in the current Android repo:
-  - `JUnit 5`
+  - `JUnit 5 (legacy modules only)`
   - `Kotest`
   - `MockK`
   - `Turbine`

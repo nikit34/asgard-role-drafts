@@ -14,10 +14,10 @@ When producing a test strategy and test matrix, assign each scenario to exactly 
 
 | Layer | What it covers | Downstream role |
 | --- | --- | --- |
-| Unit BE | Single class/function or single endpoint in isolation with controlled DB state: models, managers, querysets, services, serializers, views, viewsets, utils | `backend-unit-tester` |
+| Unit BE | Pure Python unit tests: service methods, serializer validators, model methods. No HTTP, no database | `backend-unit-tester` |
 | Unit FE | Frontend component, hook, store, formatter, or mapper in isolation: rendering, state transitions, data transformation | `frontend-unit-tester` |
 | Integration | Cross-app or multi-service flow through the Django test client: scenarios involving multiple endpoints, external service stubs, or cross-module side effects | `backend-integ-tester` |
-| E2E UI | Browser-level user flow via Playwright against a running stand | `backend-e2e-tester` |
+| E2E UI | Browser-level user flow via Playwright against a running stand | `e2e-tester` |
 
 Do not duplicate the same assertion across layers. If an integration test already proves a serializer field, do not add a unit test that only re-checks the same field. A single-endpoint view test with controlled DB belongs in Unit BE; reserve Integration for flows that span multiple services or apps.
 
@@ -27,7 +27,7 @@ Produce test design as a Confluence page following the team rules:
 
 1. **Ссылки** section: Jira link, feature branch, changed code paths, existing tests
 2. **Контекст** section: what was changed and why, with code-level detail
-3. **Риски и приоритеты** table: scenario, priority (P0/P1/P2), comment
+3. **Риски и приоритеты** table: scenario, priority (P1/P2/P3), comment
 4. **Out of scope** section: explicitly list what is not tested
 5. **Test cases by layer**: each case has:
    - `[x]` / `[ ]` coverage checkbox
@@ -55,9 +55,9 @@ Generation and publication must happen in separate chats — TD generation consu
 
 | Priority | Meaning |
 | --- | --- |
-| P0 | Critical — blocks business or core user flow |
-| P1 | Important — regression risk or significant secondary flow |
-| P2 | Supplementary — edge case, cosmetic, nice-to-have |
+| P1 | Critical — blocks business or core user flow |
+| P2 | Important — regression risk or significant secondary flow |
+| P3 | Supplementary — edge case, cosmetic, nice-to-have |
 
 Consider: frequency of use, potential damage from failure, existing automation coverage.
 
@@ -115,6 +115,7 @@ The test-architect produces these artifacts for downstream testers:
 
 - `test-strategy.md` — scope, boundaries, test levels, role assignments (must include `frontend-unit-tester` when frontend code is changed)
 - `test-matrix.md` — scenario IDs (T-001..T-NNN), priorities, layer assignments (Unit BE / Unit FE / Integration / E2E)
+  > **Note:** Scenario IDs follow the platform convention: `UT-*` for unit, `IT-*` for integration, `E2E-*` for end-to-end.
 - `risk-map.md` — HIGH/MEDIUM/LOW per area
 - `test-data-strategy.md` — fixture shapes, API response examples, error codes
 - `coverage-targets.md` — per-module or per-class coverage targets with justification
@@ -125,7 +126,7 @@ Store artifacts under `production-documentation/task-{TASK_KEY}/` in the repo or
 
 - [ ] Feature goals and user scenario understood
 - [ ] Flows built: happy path, alternative, negative
-- [ ] Scenarios prioritized (P0/P1/P2)
+- [ ] Scenarios prioritized (P1/P2/P3)
 - [ ] Technical design analyzed (changed code, DB, queues, caches)
 - [ ] Test cases prepared with layer assignments
 - [ ] Auto-candidate tests identified

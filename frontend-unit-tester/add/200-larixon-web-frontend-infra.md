@@ -38,7 +38,7 @@ This role covers frontend unit testing for the Larixon web platform. The fronten
 
 ### Test stack
 
-- Test runner: Jest or Vitest — follow what the repo uses
+- Test runner: The platform default is Jest. If the Larixon repo uses Vitest, follow the repo's runner. Verify which runner is configured before writing tests.
 - Component testing: React Testing Library (`@testing-library/react`)
 - User interaction: `@testing-library/user-event`
 - API mocking: MSW (`msw`) for network-level mocking, or Jest module mocks for simpler cases

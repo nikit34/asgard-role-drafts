@@ -23,7 +23,7 @@ Follow the dominant style of the touched module. Do not force a universal style 
 
 - Render with minimal required props
 - Query by role, label, or text — not by class name or test ID unless no semantic alternative exists
-- Use `userEvent` for interactions, not `fireEvent` (unless the module already uses `fireEvent`)
+- Use `userEvent` for interactions, not `fireEvent`.
 - Assert visible output, not internal state or implementation details
 - Test loading, error, and empty states when the component handles them
 

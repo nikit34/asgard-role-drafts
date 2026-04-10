@@ -13,7 +13,7 @@ This directory contains project-specific role additions and overrides prepared f
 - `backend-unit-tester`
 - `frontend-unit-tester`
 - `backend-integ-tester`
-- `backend-e2e-tester`
+- `e2e-tester` (directory was `backend-e2e-tester`, renamed to match ASGARD role name)
 
 The files are organized to mirror the actions requested in the Jira task:
 
@@ -31,6 +31,7 @@ The files are organized to mirror the actions requested in the Jira task:
 - Playwright is out of scope for mobile roles (separate web flow)
 - Tester roles write and validate locally; CI execution belongs to the merge/devops flow
 - Backend/web roles use Playwright for E2E, TestOps project 1, GitLab CI
+- `backend-e2e-tester` directory renamed to `e2e-tester` to match ASGARD platform role name
 
 ## Scope covered in this package
 
@@ -53,6 +54,7 @@ The files are organized to mirror the actions requested in the Jira task:
 | Slot | Action | Reason |
 | --- | --- | --- |
 | `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, screen/flow assignments, MockWebServer setup |
+| `033-test-data-fixtures.md` | replace | Platform has PL/UA/UZ markets; replaced with Larixon markets (bz/tj/mn/ja/pn/sl) |
 | `037-multi-market-tests.md` | replace | Platform copy is not aligned with Larixon mobile markets |
 | `200-larixon-test-devices.md` | add | Environments, devices, TestOps, emulator/simulator baseline |
 | `036-accessibility-tests.md` | extend | Larixon-specific a11y constraints and mobile automation hints |
@@ -61,6 +63,9 @@ The files are organized to mirror the actions requested in the Jira task:
 
 | Slot | Action | Reason |
 | --- | --- | --- |
+| `020-test-levels.md` | replace | 4-level model (Unit BE/Unit FE/Integration/E2E) instead of platform 3-level |
+| `035-test-matrix.md` | replace | Aligned priorities P1/P2/P3, added UTF-* prefix for frontend-unit-tester |
+| `060-downstream-guidance.md` | extend | Added Frontend Unit Tester guidance template |
 | `200-larixon-web-td.md` | add | TD workflow rules, web infra, tester-skills-mcp integration, markets, environments, output artifacts |
 | `070-checklist.md` | extend | Larixon-specific TD checklist: Confluence publish, Allure sync, role assignments, mcp parsing |
 
@@ -68,22 +73,22 @@ The files are organized to mirror the actions requested in the Jira task:
 
 | Slot | Action | Reason |
 | --- | --- | --- |
+| `011-test-style.md` | add | Python/pytest/Django test style (slot 011 does not exist in manifest, inserted between 010 and 012) |
 | `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, coverage targets, risk map |
-| `033-viewmodel-tests.md` | add | Django view/DRF viewset/API endpoint tests — unit-level, single endpoint, controlled DB (no platform slot, added between 032 and 040) |
+| `034-viewmodel-tests.md` | add | View-logic unit tests: permission predicates, pagination helpers, query param parsing (renumbered from 033 to avoid collision) |
 | `200-larixon-web-infra.md` | add | Larixon web/backend infra, repo, CI, TestOps, local execution, test stack, conftest example |
-| `011-test-style.md` | replace | Python/pytest/Django test style instead of generic platform pattern |
-| `020-coverage.md` | replace | pytest-cov coverage expectations with Django layer-specific floors, --cov-fail-under |
-| `031-service-tests.md` | replace | Service/business logic/management command tests (was 032-usecase-tests) |
-| `032-serializer-tests.md` | replace | DRF serializer/mapper/formatter tests (was 034-mapper-tests) |
-| `033-model-tests.md` | replace | Django model/manager/queryset tests (was 031-repository-tests) |
+| `020-coverage.md` | replace | pytest-cov coverage expectations with Django layer-specific floors, --cov-fail-under, pragma:no-cover |
+| `031-service-tests.md` | replace | Service/business logic/management command tests — pure unit, no DB |
+| `032-serializer-tests.md` | replace | DRF serializer/mapper/formatter tests |
+| `033-model-tests.md` | replace | Django model methods (Model.__new__ pattern), manager/queryset (exception for DB) |
 
 ### Frontend Unit Tester
 
 | Slot | Action | Reason |
 | --- | --- | --- |
+| `011-test-style.md` | add | React/Next.js test style (slot 011 does not exist in manifest, inserted between 010 and 012) |
 | `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, coverage targets, risk map |
 | `200-larixon-web-frontend-infra.md` | add | Larixon frontend infra, repo, test stack, local execution, reporting |
-| `011-test-style.md` | replace | React/Next.js test style with Jest/Vitest + React Testing Library |
 
 ### Backend Integration Tester
 
@@ -91,17 +96,18 @@ The files are organized to mirror the actions requested in the Jira task:
 | --- | --- | --- |
 | `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, endpoint assignments |
 | `037-multi-market-tests.md` | add | Larixon web markets, Django settings, @override_settings snippet (manifest has no slot 037) |
-| `200-larixon-web-infra.md` | add | Web integration infra, environments, stands, TestOps, execution commands, API snippet |
-| `033-factories-fixtures.md` | extend | model_bakery convention, shared fixture locations, writing rules |
+| `200-larixon-web-infra.md` | add | Web integration infra, single-endpoint scope, stands, TestOps, reverse() pattern |
+| `033-factories-fixtures.md` | replace | model_bakery replaces factory_boy (changed from extend to replace to avoid contradiction) |
 
-### Backend E2E Tester
+### E2E Tester (renamed from backend-e2e-tester to match ASGARD role name)
 
 | Slot | Action | Reason |
 | --- | --- | --- |
-| `011-test-style.md` | add | Playwright/pytest test style, POM patterns, locator strategy (manifest has no slot 011, inserted between 010 and 012) |
-| `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance: scenario IDs, flow assignments |
+| `011-test-style.md` | add | Playwright/pytest test style, framed as full-stack E2E extension of platform API patterns |
+| `013-test-architect-input.md` | add | Bridge to test-architect downstream guidance; defers to BLOCK protocol per locked 012 |
+| `031-external-services.md` | extend | Larixon-specific external service mocking: Playwright page.route(), backend mocks, market services |
 | `200-larixon-web-e2e-infra.md` | add | tester-skills-mcp integration, Allure TestOps, multi-market E2E, reporting rule |
-| `020-e2e-infrastructure.md` | replace | Larixon-specific Playwright infra, repo, stands, environments, CI, local execution |
+| `020-e2e-infrastructure.md` | replace | Larixon Playwright infra + restored multi-user setup, file org, test isolation |
 
 ## Confirmed inputs used for the drafts
 
@@ -190,6 +196,42 @@ The files are organized to mirror the actions requested in the Jira task:
 - **Execution**: emulators (Android) and simulators (iOS) — BrowserStack out of scope
 - **Playwright**: out of scope (separate web flow)
 - Tester roles write and validate locally; CI execution belongs to the merge/devops flow
+
+## Fixes after platform slot comparison (2026-04-10)
+
+Compared all 7 role drafts against actual ASGARD platform slots via API. Fixed:
+
+### Blockers (would fail upload)
+- `backend-e2e-tester/` renamed to `e2e-tester/` (platform role is `e2e-tester`)
+- `backend-unit-tester/replace/011-test-style.md` moved to `add/` (slot 011 not in manifest)
+- `frontend-unit-tester/replace/011-test-style.md` moved to `add/` (slot 011 not in manifest)
+- `backend-unit-tester/add/033-viewmodel-tests.md` renumbered to `034` (collision with replace/033-model-tests)
+
+### Locked slot conflicts resolved
+- **unit-tester/011**: Added note that JUnit 5 is legacy-only, Kotest DescribeSpec preferred for new files
+- **integ-tester/013**: Fixed "MEDIUM = 3/5 states" → risk-map controls priority/depth, not state count (5/5 preserved)
+- **integ-tester/200**: Added CI-execution disclaimer per locked "write and compile only" rule
+- **backend-unit-tester/034**: Rewrote from view/endpoint tests to pure view-logic helpers (locked 010 says views → integ-tester)
+- **backend-unit-tester/031,033**: Aligned with no-DB rule; added Model.__new__() pattern, baker.prepare for unit tests
+- **backend-test-architect/200**: P0/P1/P2 → P1/P2/P3; "Unit BE with DB" → "Unit BE no DB"; `backend-e2e-tester` → `e2e-tester`
+- **backend-integ-tester/200**: Removed scope redefinition; this role tests single-endpoint per locked 010; fixed reverse() per BIT-004
+- **backend-integ-tester/033**: Changed from `extend/` to `replace/` (model_bakery can't extend factory_boy slot)
+- **e2e-tester/011**: Added framing: Playwright is full-stack E2E extension of API patterns from slot 030
+- **e2e-tester/013**: "Proceed without strategy" → BLOCK per locked 012
+- **frontend-unit-tester/011**: Removed fireEvent exception (violates locked FUT-006)
+
+### Missing slots created
+- `integ-tester/replace/033-test-data-fixtures.md` — Larixon markets (bz/tj/mn) replacing PL/UA/UZ
+- `backend-test-architect/replace/020-test-levels.md` — 4-level model with frontend-unit-tester
+- `backend-test-architect/replace/035-test-matrix.md` — P1/P2/P3, UTF-* prefix, Реализован convention
+- `backend-test-architect/extend/060-downstream-guidance.md` — Frontend Unit Tester guidance template
+- `e2e-tester/extend/031-external-services.md` — Playwright and backend mocking for Larixon services
+
+### Content restored from platform
+- **backend-unit-tester/020**: Added `# pragma: no cover` acceptable exclusions
+- **backend-unit-tester/033**: Added `Model.__new__()` pure-unit technique
+- **e2e-tester/020**: Added multi-user setup, test isolation, file organization
+- **integ-tester/037**: Fixed locale formats to BCP47 (en-US, ru-RU, mn-MN)
 
 ## Remaining steps
 

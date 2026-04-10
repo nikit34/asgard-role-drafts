@@ -20,6 +20,15 @@ Use these as default target floors unless the repo or task explicitly defines st
 
 These are working engineering targets, not a license to write shallow tests. Behavior quality matters more than chasing a number.
 
+### Acceptable exclusions
+
+Use `# pragma: no cover` sparingly, only for:
+
+- `__repr__` and `__str__` methods
+- `class Meta:` blocks
+- Overridden abstract methods that just call `super()`
+- OS-level error paths that cannot be triggered in tests
+
 ### Coverage workflow
 
 - Run with coverage: `python -m pytest --cov={app} --cov-report=html`

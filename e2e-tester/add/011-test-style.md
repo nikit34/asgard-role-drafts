@@ -1,3 +1,9 @@
+## Larixon E2E Test Style — Playwright
+
+In the Larixon web project, E2E tests use Playwright for full-stack browser-based testing. This extends the platform's API-level flow patterns (defined in `030-flow-test-patterns.md`) with browser-level verification.
+
+When a flow can be adequately tested at the API level, prefer the API patterns from slot 030. Use Playwright when the flow requires browser rendering, JavaScript execution, or visual verification.
+
 ## Larixon Web E2E Test Style (Playwright)
 
 ### Default rule

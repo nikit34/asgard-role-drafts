@@ -54,4 +54,4 @@ If test-architect guidance conflicts with what you see in the UI (e.g. a flow li
 
 ### Artifacts not found
 
-If no test-architect artifacts exist for this feature, proceed with your own planning as defined in `015-workflow.md`. This is normal for tasks that skip the test-architect phase.
+If no test-architect artifacts exist for this feature, follow the blocking protocol defined in `012-step-zero.md`: BLOCK via /tracker-blocked mentioning Test Architect. Do not proceed without upstream test strategy.

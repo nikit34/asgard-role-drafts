@@ -4,12 +4,12 @@ Replace any platform-level assumptions about other market sets. Larixon mobile c
 
 | Market | Android flavor | iOS target | Locale | Currency | Mandatory notes |
 | --- | --- | --- | --- | --- | --- |
-| Bazaraki | `bz` | `Bazaraki` | `EN_us` | `EUR` | `GDPR_GOOGLE` is enabled for this market |
-| Somon | `tj` | `Somon.tj` | `RU_ru` | `TJS` | Cyrillic content is common; dedicated Somon stands exist |
-| Unegui | `mn` | `Unegui.mn` | `MN_mn` | `MNT` | `EMONGOLIA_ENABLED` is enabled for this market |
-| Jacars | `ja` | `Jacars` | `en_JM` | `JMD` | Car-market wording and Jamaica locale |
-| Pin | `pn` | `Pin.tt` | `en_TT` | `TTD` | Trinidad market |
-| Salanto | `sl` | `Salanto` | `EN_us` | `EUR` | Verify payment-side currency at runtime if flow depends on it |
+| Bazaraki | `bz` | `Bazaraki` | `en-US` | `EUR` | `GDPR_GOOGLE` is enabled for this market |
+| Somon | `tj` | `Somon.tj` | `ru-RU` | `TJS` | Cyrillic content is common; dedicated Somon stands exist |
+| Unegui | `mn` | `Unegui.mn` | `mn-MN` | `MNT` | `EMONGOLIA_ENABLED` is enabled for this market |
+| Jacars | `ja` | `Jacars` | `en-JM` | `JMD` | Car-market wording and Jamaica locale |
+| Pin | `pn` | `Pin.tt` | `en-TT` | `TTD` | Trinidad market |
+| Salanto | `sl` | `Salanto` | `en-US` | `EUR` | Verify payment-side currency at runtime if flow depends on it |
 
 ### Selection rule
 

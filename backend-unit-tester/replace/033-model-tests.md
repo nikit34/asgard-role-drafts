@@ -13,9 +13,15 @@ Use this slot for Django models, managers, custom querysets, and any data-access
 
 ### Django-specific patterns
 
-- Use `TestCase` (with DB) for tests that need real model instances
-- Use factories to create model instances — avoid raw `Model.objects.create()` with dozens of fields
-- Test querysets against real DB, not mocked ORM — Django's `TestCase` wraps each test in a transaction
+- **Model pure logic** (properties, custom methods, validators): test with `Model.__new__(Model)` pattern — create instance without DB:
+  ```python
+  advert = Advert.__new__(Advert)
+  advert.deadline = timezone.now() - timedelta(days=1)
+  assert advert.is_expired() is True
+  ```
+- Alternatively, use `baker.prepare` (no DB save) to get a populated instance for pure-logic tests
+- Use factories only for field population, never for DB persistence in this role
+- **Manager and queryset tests** are the primary exception to the no-DB rule. Use `@pytest.mark.django_db` only for these, and keep them in a separate test class clearly named `TestAdvertManager` or `TestAdvertQuerySet` (per BUT-001: "unless the model method inherently requires ORM")
 - For manager methods that aggregate or annotate, assert both the query result and the field values
 
 ### What NOT to test at this layer
