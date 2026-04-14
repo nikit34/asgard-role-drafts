@@ -116,4 +116,8 @@ These TDs follow the team convention:
 
 Study these before starting. Your `test-matrix.md` must use the same per-case detail level (Задача/Предусловия/Действие/Ожидаемый) — not a flat matrix table.
 
+### Language convention
+
+The Jira comment follows the platform English template (locked slot 050). The 5 output files use **Russian-language** field names per team convention: Задача, Предусловия, Действие, Ожидаемый результат, Ссылки, Контекст, Риски и приоритеты, Out of scope, Источники.
+
 TD synced to Allure TestOps web project (`project/1`) via `td-allure-sync`.

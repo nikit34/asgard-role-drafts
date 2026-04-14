@@ -2,21 +2,18 @@
 
 ### Default rule
 
-Larixon is mixed. Follow the dominant style of the touched module instead of forcing one universal format across the whole repo.
+Follow the dominant style of the touched module. New test files must use Kotest DescribeSpec.
 
 ### Android and KMP
 
-- Note: The platform default mandates Kotest only. In this project, legacy modules already use JUnit 5 — extend existing JUnit tests in the same style, but always prefer Kotest DescribeSpec for new test files.
-- Prefer the style already used in the module:
-  - Kotest `DescribeSpec` is common in feature modules
-  - JUnit-style test classes still exist in legacy app modules
+- **New files**: always Kotest `DescribeSpec` with sentence-style `it("...")`.
+- **Existing Kotest files**: extend in the same style.
+- **Existing JUnit files**: when adding tests to an existing JUnit file, migrate the file to Kotest DescribeSpec. Do not extend JUnit — the platform mandates Kotest only.
 - Common tools in the current Android repo:
-  - `JUnit 5 (legacy modules only)`
   - `Kotest`
   - `MockK`
   - `Turbine`
-- Use sentence-style `it("...")` inside Kotest specs.
-- Use `action_condition_expectedResult` naming in JUnit-style classes when the file already follows that convention.
+- Use `action_condition_expectedResult` naming only if migrating from JUnit is explicitly out of scope for the task.
 
 Minimal Kotest example (dominant style in feature modules):
 
@@ -37,33 +34,12 @@ class ReviewConfigMapperTest : DescribeSpec({
 - Assert behavior, state, and important collaboration. Do not assert implementation noise.
 - When coroutines or flows are involved, use the test dispatcher and `Turbine` instead of sleeps.
 
-### iOS
-
-- Default to `XCTestCase` in existing legacy areas.
-- Use `Quick` and `Nimble` only where the current target already uses them.
-- Do not convert an existing XCTest-only test file to Quick just to add one more case.
-- Keep one assertion vocabulary per file.
-
-Minimal XCTestCase example:
-
-```swift
-func testAuthorizationReturnsToken() {
-    let result = sut.authorize(credentials: validCredentials)
-    XCTAssertNotNil(result.token)
-    XCTAssertEqual(result.expiresIn, 3600)
-}
-```
-
 ### Assertions and doubles
 
-- Android:
-  - `shouldBe`
-  - `shouldBeInstanceOf`
-  - `coEvery`
-  - `coVerify`
-- iOS:
-  - `XCTAssert*`
-  - `expect(...)` only in Quick/Nimble files
+- `shouldBe`
+- `shouldBeInstanceOf`
+- `coEvery`
+- `coVerify` — never as the sole assertion in a test; always verify return values or state alongside
 
 ### Good Larixon examples
 
@@ -73,10 +49,6 @@ func testAuthorizationReturnsToken() {
   - `feature-advert-review/.../SubmitReviewUseCaseTest.kt`
 - Android mapper style:
   - `feature-advert-review/.../ReviewConfigMapperTest.kt`
-- iOS Quick style:
-  - `LarixonTests/LocalizationSpec.swift`
-- iOS XCTest style:
-  - `LarixonTests/API/APIAuthorizationTest.swift`
 
 ### Mandatory writing rules
 
@@ -84,11 +56,10 @@ func testAuthorizationReturnsToken() {
 - Use real domain names from the task, not placeholder entities
 - Prefer stable factories/builders over giant inline object graphs
 - Keep comments rare and only for non-obvious setup
-- If a module is legacy, extend the legacy style cleanly instead of starting a style war inside one file
+- If a module has legacy JUnit tests, migrate to Kotest when touching the file rather than extending the old style
 
 ### Do not
 
-- Invent Android-only guidance for iOS work
-- Mix Quick/Nimble and raw XCTest assertions in the same iOS file
+- Mix assertion vocabularies in the same file
 - Rewrite the entire file structure when adding a single regression test
 - Use sleeps where the repo already has dispatcher- or state-based synchronization

@@ -10,7 +10,6 @@ Add these Larixon-specific rules on top of the platform accessibility guidance.
 ### Touch targets
 
 - Android interactive controls should meet at least `48dp`.
-- iOS interactive controls should meet at least `44pt`.
 - This is especially important for:
   - icon-only buttons (action icons, toggles, hide/show controls)
   - rating controls
@@ -23,14 +22,6 @@ Android Compose check:
 composeRule.onNodeWithTag("action_icon")
     .assertHeightIsAtLeast(48.dp)
     .assertWidthIsAtLeast(48.dp)
-```
-
-iOS check:
-
-```swift
-// Verify minimum 44pt touch target
-let button = app.buttons["hideReview"]
-XCTAssertGreaterThanOrEqual(button.frame.height, 44)
 ```
 
 ### Localized text checks
@@ -51,9 +42,6 @@ Use at least `RU`, `MN`, and `EN` market variants when the task changes dense UI
 
 ### Native screen reader passes
 
-For high-risk UI changes, request at least one manual assistive-tech pass:
-
-- TalkBack on Android
-- VoiceOver on iOS
+For high-risk UI changes, request at least one manual assistive-tech pass with TalkBack on Android.
 
 If manual a11y validation was not done, say that clearly in the result.

@@ -2,14 +2,14 @@
 
 Replace any platform-level assumptions about other market sets. Larixon mobile currently spans these real markets:
 
-| Market | Android flavor | iOS target | Locale | Currency | Mandatory notes |
-| --- | --- | --- | --- | --- | --- |
-| Bazaraki | `bz` | `Bazaraki` | `en-US` | `EUR` | `GDPR_GOOGLE` is enabled for this market |
-| Somon | `tj` | `Somon.tj` | `ru-RU` | `TJS` | Cyrillic content is common; dedicated Somon stands exist |
-| Unegui | `mn` | `Unegui.mn` | `mn-MN` | `MNT` | `EMONGOLIA_ENABLED` is enabled for this market |
-| Jacars | `ja` | `Jacars` | `en-JM` | `JMD` | Car-market wording and Jamaica locale |
-| Pin | `pn` | `Pin.tt` | `en-TT` | `TTD` | Trinidad market |
-| Salanto | `sl` | `Salanto` | `en-US` | `EUR` | Verify payment-side currency at runtime if flow depends on it |
+| Market | Android flavor | Locale | Currency | Mandatory notes |
+| --- | --- | --- | --- | --- |
+| Bazaraki | `bz` | `en-US` | `EUR` | `GDPR_GOOGLE` is enabled for this market |
+| Somon | `tj` | `ru-RU` | `TJS` | Cyrillic content is common; dedicated Somon stands exist |
+| Unegui | `mn` | `mn-MN` | `MNT` | `EMONGOLIA_ENABLED` is enabled for this market |
+| Jacars | `ja` | `en-JM` | `JMD` | Car-market wording and Jamaica locale |
+| Pin | `pn` | `en-TT` | `TTD` | Trinidad market |
+| Salanto | `sl` | `en-US` | `EUR` | Verify payment-side currency at runtime if flow depends on it |
 
 ### Selection rule
 
@@ -43,12 +43,9 @@ server.dispatcher = object : Dispatcher() {
 }
 ```
 
-### Platform mapping rule
+### Android execution
 
-- Android:
-  - use real flavors from Gradle: `./gradlew connectedBzDebugAndroidTest` / `connectedTjDebugAndroidTest`
-- iOS:
-  - use real market target and `AppCustomization` values: `-scheme Bazaraki` / `-scheme Somon.tj`
+- Use real flavors from Gradle: `./gradlew connectedBzDebugAndroidTest` / `connectedTjDebugAndroidTest`
 - If one platform is not in scope for the current sprint, say that clearly and avoid pretending the validation was cross-platform
 
 ### Reporting rule
@@ -56,6 +53,6 @@ server.dispatcher = object : Dispatcher() {
 Always state:
 
 - tested market(s)
-- platform(s)
+- platform
 - locale-sensitive assertions
 - market-specific branches that were intentionally skipped

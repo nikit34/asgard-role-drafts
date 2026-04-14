@@ -12,12 +12,12 @@ Use these as default target floors unless the repo or task explicitly defines st
 
 | Layer | Target floor |
 | --- | --- |
-| Repository / data source | 85% |
-| UseCase / interactor / business rule | 90% |
-| ViewModel / presenter state reducer | 80% |
-| Mapper / serializer / formatter | 90% |
+| Repository / data source | 90% |
+| UseCase / interactor / business rule | 85% |
+| ViewModel / presenter state reducer | 85% |
+| Mapper / serializer / formatter | 100% |
 
-These are working engineering targets, not a license to write shallow tests. Behavior quality matters more than chasing a number.
+These match the platform-defined targets in `050-rules-done.md`. Behavior quality matters more than chasing a number.
 
 ### Android coverage workflow
 
@@ -26,13 +26,6 @@ These are working engineering targets, not a license to write shallow tests. Beh
 - Expected local report location: `build/reports/kover/html/index.html`
 - Fail-below-threshold: `./gradlew ${MODULE}:koverVerify`
 - If the task asks about CI coverage, report whether the Bamboo job label and published artifact URL were actually found, but do not turn direct Bamboo execution into a tester-role requirement.
-
-### iOS coverage workflow
-
-- No confirmed published iOS coverage URL or gate was found in accessible sources.
-- Local-only: `xcodebuild test -enableCodeCoverage YES` (not confirmed in CI)
-- If the task requires an iOS percentage or CI gate, escalate instead of fabricating one.
-- Still expect change-based unit coverage for new business logic, mappers, and presentation state.
 
 ### Review rule
 
@@ -47,7 +40,7 @@ When you evaluate coverage for a change:
 
 Always say:
 
-- tool actually used (`Kover`, `Jacoco`, Xcode coverage, or unknown)
+- tool actually used (`Kover`, `Jacoco`, or unknown)
 - whether the CI report URL is confirmed
 - which layer is under-covered
 - which exact behaviors are still untested
