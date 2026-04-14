@@ -2,132 +2,57 @@
 
 ### Scope
 
-This role covers Larixon backend/web work. The primary codebase is a Django/DRF monolith hosted on GitLab.
+- Repository: `https://gitlab.dev.larixon.com/larixon-classifieds/web/core` (local: `~/Core`)
+- Feature branch = Jira ticket number (e.g. `CD-4651`). Always analyze the feature branch, not master. If not specified, ask.
 
-- Repository: `https://gitlab.dev.larixon.com/larixon-classifieds/web/core`
-- Local path convention: `~/Core`
-- Feature branch convention: branch name matches Jira ticket number (e.g. `CD-4651`)
+### Test layers → downstream routing
 
-### Test layers
-
-When producing a test strategy and test matrix, assign each scenario to exactly one layer:
-
-| Layer | What it covers | Downstream role |
+| Layer | Covers | Downstream role |
 | --- | --- | --- |
-| Unit BE | Pure Python unit tests: service methods, serializer validators, model methods. No HTTP, no database | `backend-unit-tester` |
-| Unit FE | Frontend component, hook, store, formatter, or mapper in isolation: rendering, state transitions, data transformation | `frontend-unit-tester` |
-| Integration | Cross-app or multi-service flow through the Django test client: scenarios involving multiple endpoints, external service stubs, or cross-module side effects | `backend-integ-tester` |
-| E2E UI | Browser-level user flow via Playwright against a running stand | `e2e-tester` |
+| Unit BE | service/serializer/model methods — no HTTP, no DB | `backend-unit-tester` |
+| Unit FE | React component/hook/store/mapper in isolation | `frontend-unit-tester` |
+| Integration | single-endpoint through Django test client with real DB | `backend-integ-tester` |
+| E2E UI | browser-level Playwright against a running stand | `e2e-tester` |
 
-Do not duplicate the same assertion across layers. If an integration test already proves a serializer field, do not add a unit test that only re-checks the same field. A single-endpoint view test with controlled DB belongs in Unit BE; reserve Integration for flows that span multiple services or apps.
+Assign each scenario to exactly one layer. Do not duplicate assertions across layers.
 
-### TD format requirements
-
-Produce test design as a Confluence page following the team rules:
-
-1. **Ссылки** section: Jira link, feature branch, changed code paths, existing tests
-2. **Контекст** section: what was changed and why, with code-level detail
-3. **Риски и приоритеты** table: scenario, priority (P1/P2/P3), comment
-4. **Out of scope** section: explicitly list what is not tested
-5. **Test cases by layer**: each case has:
-   - `[x]` / `[ ]` coverage checkbox
-   - Unique ID (e.g. 1.1, 2.3)
-   - Реализован: (filled by downstream tester after implementation — leave empty in TD)
-   - Задача / Предусловия / Действие / Ожидаемый результат
-   - Priority, Layer, Type: `auto` (manual test cases are out of scope for this chain)
-
-Test cases must be in a markdown table or structured list with a `Name` column — this is required for downstream parsing by `tester-skills-mcp`.
-
-TD folder: [TDs 2026](https://larixon.atlassian.net/wiki/spaces/itdep/folder/4091674628)
-
-### TD workflow with tester-skills-mcp
-
-The team uses `tester-skills-mcp` for TD generation and publication:
-
-- **Spec-only TD** (before implementation): `build_td_workflow_spec_prompt` — analyzes Jira requirements + master branch code
-- **Spec+impl TD** (after implementation): `build_td_workflow_impl_prompt` — analyzes Jira requirements + feature branch code
-- **TD publication**: in a separate chat, use `action_td_publish` or `build_td_publish_prompt`
-- **Allure sync**: `action_td_allure_sync` or `build_td_allure_sync_prompt` to create test cases in Allure TestOps
-
-Generation and publication must happen in separate chats — TD generation consumes most of the context window reading code, leaving insufficient room for the publication API call.
-
-### Prioritization rules
+### Prioritization
 
 | Priority | Meaning |
 | --- | --- |
 | P1 | Critical — blocks business or core user flow |
-| P2 | Important — regression risk or significant secondary flow |
+| P2 | Important — regression risk, significant secondary flow |
 | P3 | Supplementary — edge case, cosmetic, nice-to-have |
-
-Consider: frequency of use, potential damage from failure, existing automation coverage.
-
-### Test design techniques
-
-Apply techniques based on feature logic:
-
-| Technique | When to apply |
-| --- | --- |
-| Equivalence partitioning | Groups of valid/invalid values |
-| Boundary value analysis | Numeric/logical constraints |
-| Pairwise testing | Multiple parameters and combinations |
-| Decision tables | Multiple conditions and business rules |
-| Scenario testing | User stories and multi-step flows |
-
-### Code analysis rules
-
-- Always analyze code in the feature branch matching the Jira ticket number
-- If the branch is not specified, ask before analyzing
-- Identify: changed files, new endpoints, modified serializers, changed models, affected tests
-- Reference code paths precisely: `module/path.py:line_number` — method or class name
-- Example: `adverts/views/feeds/renderers.py:42` — `FacebookFeedXMLRenderer._to_xml()`
-
-### Allure TestOps
-
-- Base URL: `https://larixon.testops.cloud`
-- Web project: `https://larixon.testops.cloud/project/1/launches`
-- Test cases from TD are synced to Allure via `td-allure-sync` skill
-
-### Environments
-
-Tests execute against shared stands:
-
-- `stand1.dev.larixon.com` through `stand13.dev.larixon.com`
-- Market-specific: `bazaraki-master.dev.larixon.com`, `somon-master.dev.larixon.com`, etc.
-
-Always name the exact stand in test prerequisites, not just "dev".
 
 ### Markets
 
-Larixon serves multiple markets. When the feature affects user-facing content, money, or locale-dependent behavior, the test matrix must include market-specific rows:
+Include market-specific rows in the test matrix when the feature touches locale, currency, or user-facing content:
 
-| Market | Key identifiers | Notes |
-| --- | --- | --- |
-| Bazaraki | locale=EN, currency=EUR | GDPR/Google privacy rules apply |
-| Somon | locale=RU, currency=TJS | Cyrillic content |
-| Unegui | locale=MN, currency=MNT | eMongolia integration |
-| Jacars | locale=en_JM, currency=JMD | Car-market specific |
-| Pin | locale=en_TT, currency=TTD | Trinidad market |
-| Salanto | locale=EN, currency=EUR | Verify payment currency at runtime |
+| Market | Locale | Currency | Notes |
+| --- | --- | --- | --- |
+| Bazaraki | EN | EUR | GDPR/Google privacy |
+| Somon | RU | TJS | Cyrillic content |
+| Unegui | MN | MNT | eMongolia integration |
+| Jacars | en_JM | JMD | Car-market specific |
+| Pin | en_TT | TTD | Trinidad |
+| Salanto | EN | EUR | Verify payment currency |
 
 ### Output artifacts
 
-The test-architect produces these artifacts for downstream testers:
+Produce under `production-documentation/task-{TASK_KEY}/` or as a Confluence page in [TDs 2026](https://larixon.atlassian.net/wiki/spaces/itdep/folder/4091674628):
 
-- `test-strategy.md` — scope, boundaries, test levels, role assignments (must include `frontend-unit-tester` when frontend code is changed)
-- `test-matrix.md` — scenario IDs (T-001..T-NNN), priorities, layer assignments (Unit BE / Unit FE / Integration / E2E)
-  > **Note:** Scenario IDs follow the platform convention: `UT-*` for unit, `IT-*` for integration, `E2E-*` for end-to-end.
-- `risk-map.md` — HIGH/MEDIUM/LOW per area
-- `test-data-strategy.md` — fixture shapes, API response examples, error codes
-- `coverage-targets.md` — per-module or per-class coverage targets with justification
+- `test-strategy.md` — scope, boundaries, level assignments. Include `frontend-unit-tester` when FE code is changed.
+- `test-matrix.md` — scenario IDs (`UT-*` / `UTF-*` / `IT-*` / `E2E-*`), priorities, layer, assigned downstream role.
+- `risk-map.md` — HIGH/MEDIUM/LOW per area.
+- `test-data-strategy.md` — fixture shapes, API response examples, error codes.
+- `coverage-targets.md` — per-module targets with justification.
 
-Store artifacts under `production-documentation/task-{TASK_KEY}/` in the repo or publish the TD to Confluence.
+### TD format (required for `tester-skills-mcp` parsing)
 
-### Checklist before completing TD
+Each test case row must have:
+- `[x]`/`[ ]` checkbox, unique ID (e.g. 1.1, 2.3), `Name` column
+- `Реализован:` — leave empty (filled by downstream tester after implementation)
+- Задача / Предусловия / Действие / Ожидаемый результат
+- Priority, Layer, Type: `auto`
 
-- [ ] Feature goals and user scenario understood
-- [ ] Flows built: happy path, alternative, negative
-- [ ] Scenarios prioritized (P1/P2/P3)
-- [ ] Technical design analyzed (changed code, DB, queues, caches)
-- [ ] Test cases prepared with layer assignments
-- [ ] Auto-candidate tests identified
-- [ ] Coverage validated against risks
+TD synced to Allure TestOps web project (`project/1`) via `td-allure-sync`. Publication and generation happen in separate chats (generation consumes most context).
